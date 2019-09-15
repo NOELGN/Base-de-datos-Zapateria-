@@ -1,0 +1,69 @@
+SELECT
+compra.folioCompra,
+compra.fechaCompra,
+compra.totalCompra,
+personal.nombre,
+personal.apellidoUno,
+personal.apellidoDos,
+detallecompra.cantidadCompra,
+detallecompra.precioCompra,
+zapato.estilo,
+zapato.talla,
+tipozapato.descripcionZapato,
+color.color,
+marca.marca,
+material.material
+FROM
+compra
+INNER JOIN detallecompra ON detallecompra.folioCompra = compra.folioCompra
+INNER JOIN personal ON compra.clavePersonal = personal.clavePersonal
+INNER JOIN zapato ON detallecompra.codigoZapato = zapato.codigoZapato
+INNER JOIN tipozapato ON zapato.idtipoZapato = tipozapato.idtipoZapato
+INNER JOIN color ON zapato.idcolor = color.idcolor
+INNER JOIN marca ON zapato.idmarca = marca.idmarca
+INNER JOIN material ON zapato.idmaterial = material.idmaterial
+
+
+SELECT
+venta.folioVenta,
+venta.fechaVenta,
+venta.totalVenta,
+detalleventa.cantidadVenta,
+detalleventa.precioVendido,
+personal.nombre,
+personal.apellidoUno,
+personal.apellidoDos,
+zapato.talla,
+tipozapato.descripcionZapato,
+marca.marca,
+color.color,
+material.material
+FROM
+venta
+INNER JOIN detalleventa ON detalleventa.folioVenta = venta.folioVenta
+INNER JOIN personal ON venta.clavePersonal = personal.clavePersonal
+INNER JOIN zapato ON detalleventa.codigoZapato = zapato.codigoZapato
+INNER JOIN tipozapato ON zapato.idtipoZapato = tipozapato.idtipoZapato
+INNER JOIN marca ON zapato.idmarca = marca.idmarca
+INNER JOIN color ON zapato.idcolor = color.idcolor
+INNER JOIN material ON zapato.idmaterial = material.idmaterial
+
+
+
+SELECT
+zapato.estilo,
+zapato.precioVenta,
+zapato.porcentajeGanancia,
+zapato.talla,
+zapato.existencia,
+zapato.statusZapato,
+color.color,
+marca.marca,
+material.material,
+tipozapato.descripcionZapato
+FROM
+zapato
+INNER JOIN color ON zapato.idcolor = color.idcolor
+INNER JOIN marca ON zapato.idmarca = marca.idmarca
+INNER JOIN material ON zapato.idmaterial = material.idmaterial
+INNER JOIN tipozapato ON zapato.idtipoZapato = tipozapato.idtipoZapato

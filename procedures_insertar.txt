@@ -1,0 +1,548 @@
+DELIMITER TT	
+DROP PROCEDURE IF EXISTS inserta_marca;
+CREATE PROCEDURE inserta_marca(PdescripcionMarca VARCHAR(50))
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	IF EXISTS (SELECT marca FROM marca 
+	WHERE marca.marca=PdescripcionMarca) THEN
+	
+	SELECT "DATO DUPLICADO" AS "AVISO";
+	ELSE 
+	INSERT marca VALUES(null,UPPER(TRIM(PdescripcionMarca)),1);
+		COMMIT;
+		SELECT "se completo la transaccion" As "AVISO";
+
+	END IF;
+END TT
+DELIMITER ;
+
+call inserta_marca('PATITo2')
+
+DELIMITER TT	
+DROP PROCEDURE IF EXISTS inserta_color;
+CREATE PROCEDURE inserta_color(Pcolor VARCHAR(50))
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	IF EXISTS (SELECT color FROM color 
+	WHERE color.color=Pcolor) THEN
+	
+	SELECT "DATO DUPLICADO" AS "AVISO";
+	ELSE 
+	INSERT color VALUES(null,UPPER(TRIM(Pcolor)),1);
+		COMMIT;
+		SELECT "se completo la transaccion" As "AVISO";
+
+	END IF;
+END TT
+DELIMITER ;
+
+call inserta_color('blanco')
+
+DROP PROCEDURE IF EXISTS inserta_material;
+CREATE PROCEDURE inserta_material(Pmaterial VARCHAR(50))
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	IF EXISTS (SELECT material FROM material 
+	WHERE material.material=Pmaterial) THEN
+	
+	SELECT "DATO DUPLICADO" AS "AVISO";
+	ELSE 
+	INSERT material VALUES(null,UPPER(TRIM(Pmaterial)),1);
+		COMMIT;
+		SELECT "se completo la transaccion" As "AVISO";
+
+	END IF;
+END
+
+call inserta_material('SINTETICO')
+
+DROP PROCEDURE IF EXISTS inserta_tipoZapato;
+CREATE PROCEDURE inserta_tipoZapato(PtipoZapato VARCHAR(50))
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	IF EXISTS (SELECT descripcionZapato FROM tipozapato
+	WHERE tipozapato.descripcionZapato=PtipoZapato) THEN
+	
+	SELECT "DATO DUPLICADO" AS "AVISO";
+	ELSE 
+	INSERT tipozapato VALUES(null,UPPER(TRIM(PtipoZapato)));
+		COMMIT;
+		SELECT "se completo la transaccion" As "AVISO";
+
+	END IF;
+END
+
+call inserta_tipoZapato('ZAPATOVESTIR')
+
+
+DROP PROCEDURE IF EXISTS inserta_formaPago;
+CREATE PROCEDURE inserta_formaPago(PformaPago VARCHAR(50))
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	IF EXISTS (SELECT descripcionPago FROM formapago
+	WHERE formapago.descripcionPago=PformaPago) THEN
+	
+	SELECT "DATO DUPLICADO" AS "AVISO";
+	ELSE 
+	INSERT formapago VALUES(null,UPPER(TRIM(PformaPago)),1);
+		COMMIT;
+		SELECT "se completo la transaccion" As "AVISO";
+
+	END IF;
+END
+
+call inserta_formaPago('CREDITO')
+
+
+DROP PROCEDURE IF EXISTS inserta_tipoGarantia;
+CREATE PROCEDURE inserta_tipoGarantia(PtipoGarantia VARCHAR(50))
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	IF EXISTS (SELECT descripciontipoGarantia FROM tipogarantia
+	WHERE tipogarantia.descripciontipoGarantia=PtipoGarantia) THEN
+	
+	SELECT "DATO DUPLICADO" AS "AVISO";
+	ELSE 
+	INSERT tipogarantia VALUES(null,UPPER(TRIM(PtipoGarantia)));
+		COMMIT;
+		SELECT "se completo la transaccion" As "AVISO";
+
+	END IF;
+END
+
+call inserta_tipogarantia('CAMBIO')
+
+///////////////////
+
+DROP PROCEDURE IF EXISTS inserta_cargo;
+CREATE PROCEDURE inserta_cargo(Pcargo VARCHAR(50))
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	IF EXISTS (SELECT descripcionCargo FROM cargo
+	WHERE cargo.descripcionCargo=Pcargo) THEN
+	
+	SELECT "DATO DUPLICADO" AS "AVISO";
+	ELSE 
+	INSERT cargo VALUES(null,UPPER(TRIM(Pcargo)),1);
+		COMMIT;
+		SELECT "se completo la transaccion" As "AVISO";
+
+	END IF;
+END
+
+call inserta_cargo('jefe')
+
+
+DROP PROCEDURE IF EXISTS inserta_zapato;
+CREATE PROCEDURE inserta_zapato(
+			PcodigoZapato VARCHAR(20),
+			Pestilo INT,
+			PporcentajeGanancia FLOAT,
+			Ptalla INT,
+			PidtipoZapato INT,
+			Pidmarca INT,
+			Pidcolor INT,
+			Pidmaterial INT)
+			
+BEGIN
+	DECLARE  EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+	ROLLBACK;
+		SELECT "Operacion Abortada" AS "ADVERTENCIA";
+	END;
+	SET AUTOCOMMIT=0;
+	
+	IF EXISTS (SELECT codigoZapato FROM zapato WHERE 
+	zapato.codigoZapato=PcodigoZapato) THEN
+		SELECT "ya existe" AS "AVISO";
+	ELSE
+	IF EXISTS (SELECT idmarca FROM
+		marca WHERE marca.idmarca=Pidmarca AND marca.statusMarca=1 LIMIT 1) THEN
+		
+		IF EXISTS (SELECT idcolor FROM
+		color WHERE color.idcolor=Pidcolor AND color.statusColor=1 LIMIT 1) THEN
+			
+			IF EXISTS (SELECT idmaterial FROM
+			material WHERE material.idmaterial=Pidmaterial AND material.statusMaterial=1 LIMIT 1) THEN
+			
+				IF EXISTS (SELECT idtipoZapato FROM
+				tipozapato WHERE tipozapato.idtipoZapato=PidtipoZapato LIMIT 1) THEN
+				
+					INSERT zapato VALUES(
+						PcodigoZapato,
+						Pestilo,
+						0,
+						PporcentajeGanancia,
+						Ptalla,
+						0,
+						1,
+						PidtipoZapato,
+						Pidmarca,
+						Pidcolor,
+						Pidmaterial);
+						
+						COMMIT;
+						SELECT "Se completo la Transaccion" AS "AVISO";
+						
+						END IF;
+					END IF;
+				END IF;
+			END IF;
+		END IF;v
+END
+				
+CALL inserta_zapato('ZAPATO2',320,.30,26,1,1,1,1)
+
+DELIMITER TT
+DROP PROCEDURE IF EXISTS inserta_compra;
+CREATE PROCEDURE inserta_compra(PfolioCompra VARCHAR(20),
+				PfechaCompra DATE,
+				PtotalCompra FLOAT,
+				Pusuario VARCHAR(45))
+BEGIN
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+	SET AUTOCOMMIT = 0;
+	IF EXISTS (SELECT folioCompra FROM compra 
+	WHERE compra.folioCompra=PfolioCompra) THEN
+	
+	
+	SELECT "DATO DUPLICADO" AS "AVISO";
+	ELSE
+		IF EXISTS (SELECT usuario FROM
+		personal WHERE personal.usuario=Pusuario AND personal.statusPersonal=1 LIMIT 1) THEN
+			
+			INSERT compra VALUES(UPPER(TRIM(PfolioCompra)),
+						UPPER(TRIM(PfechaCompra)),
+						UPPER(TRIM(PtotalCompra)),
+						UPPER(
+						TRIM(
+						(SELECT clavePersonal FROM
+						personal WHERE personal.usuario=Pusuario
+						AND personal.statusPersonal=1 LIMIT 1))));
+	
+			COMMIT;
+			SELECT "se completo la transaccion" As "AVISO";
+			END IF;
+	END IF;
+END TT
+DELIMITER ;
+
+CALL inserta_compra('COMPRA2',NOW(),900,'NOE')
+
+DROP PROCEDURE IF EXISTS inserta_detalleCompra;
+	CREATE PROCEDURE inserta_detalleCompra(
+									PcantidadCompra FLOAT,
+									PprecioCompra FLOAT,
+									PfolioCompra VARCHAR(20),
+									PcodigoZapato VARCHAR(20))
+									
+BEGIN
+     DECLARE ganancia FLOAT;
+    
+     DECLARE  EXIT HANDLER FOR SQLEXCEPTION
+     BEGIN
+     ROLLBACK;
+     SELECT "Operacion Abortada" AS "ADVERTENCIA";
+     END;
+     SET AUTOCOMMIT=0;
+		 
+		 IF EXISTS (SELECT folioCompra FROM compra
+        WHERE compra.folioCompra=PfolioCompra LIMIT 1) THEN
+				
+			IF EXISTS (SELECT codigoZapato FROM zapato
+               WHERE zapato.codigoZapato=PcodigoZapato LIMIT 1) THEN
+							 
+				IF PcantidadCompra > 0 THEN
+					IF PprecioCompra > 0 THEN
+						INSERT detallecompra VALUES(null,
+							PcantidadCompra,
+							PprecioCompra,     
+							PfolioCompra,
+							PcodigoZapato);
+							
+			SELECT zapato.porcentajeGanancia INTO ganancia FROM zapato
+			WHERE zapato.codigoZapato=PcodigoZapato;
+
+			UPDATE zapato Set zapato.existencia = zapato.existencia + 						PcantidadCompra,
+							zapato.precioVenta = PprecioCompra +		   		
+							PprecioCompra * ganancia WHERE
+							zapato.codigoZapato = PcodigoZapato;
+			
+			COMMIT;
+			SELECT "Se completo la Transaccion" AS "AVISO";
+			
+END IF;
+END IF;
+END IF;
+END IF;
+END
+
+call inserta_detalleCompra(3,300,'COMPRA2','ZAPATO2')
+
+DROP PROCEDURE IF EXISTS inserta_personal;
+CREATE PROCEDURE inserta_personal(
+	PclavePersonal VARCHAR(8),
+	Pnombre VARCHAR(30),
+	Papellido1 VARCHAR(30),
+	Papellido2 VARCHAR(30),
+	Pusuario VARCHAR(15),
+	Pcontrasenia VARCHAR(8),
+	Pidcargo VARCHAR(255))
+	
+BEGIN
+	DECLARE  EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		ROLLBACK;
+		SELECT "Operacion Abortada" AS "ADVERTENCIA";
+	END;
+	SET AUTOCOMMIT=0;
+	IF EXISTS (SELECT usuario FROM personal WHERE 
+	personal.usuario=Pusuario) THEN
+		SELECT "ya existe" AS "Advertencia";
+	ELSE
+		IF EXISTS (SELECT idcargo FROM
+		cargo WHERE cargo.idcargo=Pidcargo AND cargo.statusCargo=1 LIMIT
+		1) THEN
+		
+		INSERT personal VALUES(
+			PclavePersonal,
+			UPPER(TRIM(Pnombre)),
+			UPPER(TRIM(Papellido1)),
+			UPPER(TRIM(Papellido2)),
+			TRIM(Pusuario),
+			Pcontrasenia,
+			1,
+			Pidcargo);
+			
+			COMMIT;
+			SELECT "Se completo la Transaccion" AS "AVISO";
+		END IF;
+	END IF;
+END
+
+call inserta_personal('ALT32TGD','ALAM','SUAREZ','ZAVALA','ALIM','ALIM1234',1)
+									
+DROP PROCEDURE IF EXISTS inserta_venta;
+CREATE PROCEDURE inserta_venta(
+	PfolioVenta VARCHAR(20),
+	PtotalVenta FLOAT,
+	Pusuario VARCHAR(8))
+
+BEGIN
+	DECLARE  EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		ROLLBACK;
+		SELECT "Operacion Abortada" AS "ADVERTENCIA";
+	END;
+	SET AUTOCOMMIT=0;
+	IF EXISTS (SELECT folioVenta FROM venta WHERE 
+	venta.folioVenta=PfolioVenta) THEN
+		SELECT "ya existe" AS "Advertencia";
+	ELSE
+		IF EXISTS (SELECT usuario FROM
+		personal WHERE personal.usuario=Pusuario AND personal.statusPersonal=1 LIMIT 1) THEN
+		
+		INSERT venta VALUES(
+			UPPER(TRIM(PfolioVenta)),
+			UPPER(TRIM(NOW())),
+			PtotalVenta,
+			(SELECT ClavePersonal FROM
+			personal WHERE personal.usuario=Pusuario
+			AND personal.statusPersonal=1 LIMIT 1));
+			COMMIT;
+			SELECT "Se completo la Transaccion" AS "AVISO";
+		END IF;
+	END IF;
+END
+					
+call inserta_venta('VENTA3',390,'NOE')		
+
+
+
+
+
+
+
+DROP PROCEDURE IF EXISTS inserta_detalleVenta;
+CREATE PROCEDURE inserta_detalleVenta(
+         	PcantidadVenta INT,
+					PfolioVenta VARCHAR(20),  
+					PcodigoZapato VARCHAR(20))
+		
+BEGIN
+
+	DECLARE  EXIT HANDLER FOR SQLEXCEPTION
+     	BEGIN
+     	ROLLBACK;
+     	SELECT "Operacion Abortada" AS "ADVERTENCIA";
+     	END;
+     	SET AUTOCOMMIT=0;
+
+	IF EXISTS (SELECT codigoZapato FROM zapato
+		   WHERE zapato.codigoZapato=PcodigoZapato AND 
+			 zapato.statusZapato=1 AND zapato.existencia>0) THEN
+	
+	INSERT detalleventa VALUES(null,
+			PcantidadVenta,
+			(SELECT precioVenta FROM zapato 
+			WHERE zapato.codigoZapato=PcodigoZapato),
+			PfolioVenta,
+			PcodigoZapato);
+		
+	UPDATE venta SET totalVenta = (SELECT 
+	detalleventa.cantidadVenta * detalleventa.precioVendido
+	FROM detalleventa WHERE detalleventa.folioVenta = PfolioVenta) WHERE venta.folioVenta=PfolioVenta;
+	
+	
+	UPDATE zapato SET zapato.existencia = 
+	zapato.existencia - PcantidadVenta
+	WHERE zapato.codigoZapato = PcodigoZapato;
+	
+	 COMMIT;
+	 SELECT "Se completo la Transaccion" AS "AVISO";
+END IF;
+END
+	
+call inserta_detalleVenta(1,'VENTA4','ZAPATO2')
+
+call inserta_venta('VENTA4','NOE')
+
+
+
+
+
+
+									
+DROP PROCEDURE IF EXISTS inserta_detalleFormaPago;
+CREATE PROCEDURE inserta_detalleFormaPago(
+	Pmonto FLOAT,
+	PfolioVenta VARCHAR(20),
+	PidFormaPago INT)
+	
+BEGIN
+	DECLARE  EXIT HANDLER FOR SQLEXCEPTION
+		BEGIN
+			ROLLBACK;
+			SELECT "Operacion Abortada" AS "ADVERTENCIA";
+		END;
+	SET AUTOCOMMIT=0;	
+	
+	IF EXISTS (SELECT folioVenta FROM venta WHERE 
+	venta.folioVenta=PfolioVenta) THEN
+	
+		IF EXISTS (SELECT idFormaPago FROM formapago WHERE
+		formapago.idFormaPago=PidFormaPago AND formapago.statusPago=1 
+		LIMIT 1) THEN
+	
+			IF Pmonto > 0 THEN
+			
+				INSERT detalleformapago VALUES(
+											null,
+											Pmonto,
+											PfolioVenta,
+											PidFormaPago);
+												
+				COMMIT;
+				SELECT "Se completo la Transaccion" AS "AVISO";
+			END IF;
+		END IF;
+	END IF;	
+END
+
+
+CALL inserta_detalleFormaPago(600,'VENTA3',1)	
+CALL inserta_detalleFormaPago(300,'VENTA3',2)
+
+
+DROP PROCEDURE IF EXISTS inserta_garantia;
+CREATE PROCEDURE inserta_garantia(
+	PdescripcionGarantia VARCHAR(255),
+	PidtipoGarantia INT,
+	PclavePersonal VARCHAR(8),
+	PfolioVenta VARCHAR(20))
+	
+	
+BEGIN
+	DECLARE  EXIT HANDLER FOR SQLEXCEPTION
+		BEGIN
+			ROLLBACK;
+			SELECT "Operacion Abortada" AS "ADVERTENCIA";
+		END;
+	SET AUTOCOMMIT=0;	
+	
+	IF EXISTS (SELECT folioVenta FROM venta WHERE 
+	venta.folioVenta=PfolioVenta) THEN
+	
+		IF EXISTS (SELECT clavePersonal FROM personal WHERE
+		personal.clavePersonal=PclavePersonal AND personal.statusPersonal=1 
+		LIMIT 1) THEN
+				INSERT garantia VALUES(
+								null,
+								PdescripcionGarantia,
+								PidtipoGarantia,
+								PclavePersonal,
+								PfolioVenta);
+								
+								
+												
+				COMMIT;
+				SELECT "Se completo la Transaccion" AS "AVISO";
+		END IF;
+	END IF;	
+END
+					
+CALL inserta_garantia('ROTO',2,'LONG3212','VENTA3')
+

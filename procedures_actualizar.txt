@@ -1,0 +1,366 @@
+DROP PROCEDURE IF EXISTS actualizar_cargo;
+CREATE PROCEDURE actualizar_cargo(
+									PidCargo INT,
+									PdescripcionCargo VARCHAR(45),
+									PstatusCargo TINYINT(4))
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	IF EXISTS (SELECT idcargo FROM cargo WHERE cargo.idcargo=PidCargo LIMIT 1) THEN
+	
+	UPDATE cargo SET descripcionCargo = PdescripcionCargo, statusCargo = 					 PstatusCargo WHERE cargo.idcargo = PidCargo;
+	COMMIT;
+	SELECT "SE ACTUALIZO CORRECTAMENTE" AS "AVISO";
+	ELSE 
+		SELECT "NO EXISTE CARGO" As "AVISO";
+	END IF;
+END
+
+CALL actualizar_cargo(2,'JEFE',1)
+
+
+DROP PROCEDURE IF EXISTS actualizar_color;
+CREATE PROCEDURE actualizar_color(
+									PidColor INT,
+									Pcolor VARCHAR(255),
+									PstatusColor TINYINT(4))
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	IF EXISTS (SELECT idcolor FROM color WHERE color.idcolor=PidColor LIMIT 1) THEN
+	
+	UPDATE color SET color.color = Pcolor, statusColor = 		
+	PstatusColor WHERE color.idcolor = PidColor;
+	
+	COMMIT;
+	SELECT "SE ACTUALIZO CORRECTAMENTE" AS "AVISO";
+	ELSE 
+		SELECT "NO EXISTE CARGO" As "AVISO";
+	END IF;
+END
+
+call actualizar_color(1,'NEGRO',1)
+
+
+DROP PROCEDURE IF EXISTS actualizar_marca;
+CREATE PROCEDURE actualizar_marca(
+									PidMarca INT,
+									Pmarca VARCHAR(255),
+									PstatusMarca TINYINT(4))
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	IF EXISTS (SELECT idmarca FROM marca WHERE marca.idmarca=PidMarca LIMIT 1) THEN
+	
+	UPDATE marca SET marca.marca = Pmarca, statusMarca = 		
+	PstatusMarca WHERE marca.idmarca = PidMarca;
+	
+	COMMIT;
+	SELECT "SE ACTUALIZO CORRECTAMENTE" AS "AVISO";
+	ELSE 
+		SELECT "NO EXISTE CARGO" As "AVISO";
+	END IF;
+END
+
+call actualizar_marca(2,'PATITO2',1)
+
+DROP PROCEDURE IF EXISTS actualizar_material;
+CREATE PROCEDURE actualizar_material(
+									PidMaterial INT,
+									Pmaterial VARCHAR(45),
+									PstatusMaterial TINYINT(4))
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	IF EXISTS (SELECT idmaterial FROM material WHERE material.idmaterial=PidMaterial LIMIT 1) THEN
+	
+	UPDATE material SET material.material = Pmaterial, statusMaterial = 		
+	PstatusMaterial WHERE material.idmaterial = PidMaterial;
+	
+	COMMIT;
+	SELECT "SE ACTUALIZO CORRECTAMENTE" AS "AVISO";
+	ELSE 
+		SELECT "NO EXISTE CARGO" As "AVISO";
+	END IF;
+END
+
+call actualizar_material(1,'PIEL',1)
+
+
+DROP PROCEDURE IF EXISTS actualizar_tipoZapato;
+CREATE PROCEDURE actualizar_tipoZapato(
+									PidtipoZapato INT,
+									PdescripcionZapato VARCHAR(45))
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	IF EXISTS (SELECT idtipoZapato FROM tipozapato WHERE tipozapato.idtipoZapato=PidtipoZapato LIMIT 1) THEN
+	
+	UPDATE tipozapato SET tipozapato.descripcionZapato = PdescripcionZapato
+	WHERE tipoZapato.idtipoZapato = PidtipoZapato;
+	
+	COMMIT;
+	SELECT "SE ACTUALIZO CORRECTAMENTE" AS "AVISO";
+	ELSE 
+		SELECT "NO EXISTE CARGO" As "AVISO";
+	END IF;
+END
+
+call actualizar_tipoZapato(1,'ZAPATILLA')
+
+DROP PROCEDURE IF EXISTS actualizar_formapago;
+CREATE PROCEDURE actualizar_formapago(
+									PidFormaPago INT,
+									PdescripcionPago VARCHAR(45),
+									PstatusPago TINYINT(4))
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	IF EXISTS (SELECT idFormaPago FROM formapago WHERE formapago.idFormaPago
+	=PidFormaPago LIMIT 1) THEN
+	
+	UPDATE formapago SET formapago.descripcionPago = PdescripcionPago,
+	statusPago=PstatusPago WHERE formapago.idFormaPago = PidFormaPago;
+	
+	COMMIT;
+	SELECT "SE ACTUALIZO CORRECTAMENTE" AS "AVISO";
+	ELSE 
+		SELECT "NO EXISTE CARGO" As "AVISO";
+	END IF;
+END
+
+call actualizar_formapago(1,'EFECTIVO',1)
+
+DROP PROCEDURE IF EXISTS actualizar_tipoGarantia;
+CREATE PROCEDURE actualizar_tipoGarantia(
+									PidtipoGarantia INT,
+									PdescripcionGarantia VARCHAR(255))
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	IF EXISTS (SELECT idtipoGarantia FROM tipogarantia WHERE tipogarantia.idtipoGarantia=PidtipoGarantia LIMIT 1) THEN
+	
+	UPDATE tipogarantia SET tipogarantia.descripciontipoGarantia = PdescripcionGarantia
+	WHERE tipogarantia.idtipoGarantia = PidtipoGarantia;
+	
+	COMMIT;
+	SELECT "SE ACTUALIZO CORRECTAMENTE" AS "AVISO";
+	ELSE 
+		SELECT "NO EXISTE CARGO" As "AVISO";
+	END IF;
+END
+
+call actualizar_tipoGarantia(1,'CAMBIO')
+
+
+DROP PROCEDURE IF EXISTS actualizar_zapato;
+CREATE PROCEDURE actualizar_zapato(
+								 PcodigoZapato VARCHAR(20),
+								 Pestilo INT,
+								 PporcentajeGanancia FLOAT,
+								 Ptalla INT,
+								 PstatusZapato TINYINT,
+								 PidtipoZapato INT,
+								 Pidmarca INT,
+								 Pidcolor INT,
+								 Pidmaterial INT)
+								 
+								 
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	
+	IF EXISTS (SELECT codigoZapato FROM zapato WHERE zapato.codigoZapato=PcodigoZapato LIMIT 1) THEN
+	
+	UPDATE zapato SET zapato.estilo = Pestilo,
+										zapato.porcentajeGanancia = PporcentajeGanancia,
+										zapato.talla = Ptalla,
+										zapato.statusZapato = PstatusZapato,
+										zapato.idtipoZapato = PidtipoZapato,
+										zapato.idmarca = Pidmarca,
+										zapato.idcolor = Pidcolor,
+										zapato.idmaterial = Pidmaterial
+										WHERE zapato.codigoZapato=PcodigoZapato;
+	
+										COMMIT;
+										SELECT "SE ACTUALIZO CORRECTAMENTE" AS "AVISO";
+	ELSE 
+		SELECT "NO EXISTE CARGO" As "AVISO";
+	END IF;
+END
+				
+CALL actualizar_zapato('ZAPATO2',320,0.3,26,1,1,1,1,1)
+
+DROP PROCEDURE IF EXISTS actualizar_personal;
+CREATE PROCEDURE actualizar_personal(
+								 PclavePersonal VARCHAR(8),
+								 Pnombre VARCHAR(30),
+								 PapellidoUno VARCHAR(45),
+								 PapellidoDos VARCHAR(45),
+								 Pusuario VARCHAR(45),
+								 Pcontrasena VARCHAR(45),
+								 PstatusPersonal TINYINT(4),
+								 Pidcargo INT)
+								 
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+	BEGIN
+		SELECT "Operacion abortada" As "Advertencia";
+		ROLLBACK;
+	END;
+
+	SET AUTOCOMMIT = 0;
+	
+	IF EXISTS (SELECT clavePersonal FROM personal WHERE personal.clavePersonal=PclavePersonal LIMIT 1) THEN
+	
+	UPDATE personal SET personal.nombre = Pnombre,
+										personal.apellidoUno = PapellidoUno,
+										personal.apellidoDos = PapellidoDos,
+										personal.usuario = Pusuario,
+										personal.contrasena = Pcontrasena,
+										personal.statusPersonal = PstatusPersonal,
+										personal.idcargo = Pidcargo
+										WHERE personal.clavePersonal=PclavePersonal;
+	
+										COMMIT;
+										SELECT "SE ACTUALIZO CORRECTAMENTE" AS "AVISO";
+	ELSE 
+		SELECT "NO EXISTE CARGO" As "AVISO";
+	END IF;
+END
+
+								 
+CALL actualizar_personal('LONG3212','NOE','LOPEZ','GONZALES','NOE','AMIGOXD16',1,1)
+
+
+DROP PROCEDURE IF EXISTS actualizar_detalleCompra;
+CREATE PROCEDURE actualizar_detalleCompra(
+								 PidDetalleCompra INT,
+								 PcantidadCompra FLOAT,
+								 PprecioCompra FLOAT)
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+		BEGIN
+			SELECT "Operacion abortada" As "Advertencia";
+			ROLLBACK;
+		END;
+SET AUTOCOMMIT = 0;
+
+	IF EXISTS (SELECT idDetalleCompra FROM detallecompra WHERE detallecompra.idDetalleCompra=PidDetalleCompra LIMIT 1) THEN
+	
+	UPDATE detallecompra SET detallecompra.cantidadCompra = PcantidadCompra,
+													 detallecompra.precioCompra = PprecioCompra
+													 WHERE detallecompra.idDetalleCompra
+													 =PidDetalleCompra;
+													 
+	UPDATE compra SET compra.totalCompra = (SELECT cantidadCompra FROM detallecompra WHERE
+										detallecompra.idDetalleCompra=PidDetalleCompra) *
+										(SELECT precioCompra FROM detallecompra WHERE
+										detallecompra.idDetalleCompra=PidDetalleCompra)
+										WHERE compra.folioCompra=
+										(SELECT folioCompra FROM detallecompra WHERE
+										detallecompra.idDetalleCompra=PidDetalleCompra);
+										
+	UPDATE zapato SET zapato.existencia = PcantidadCompra
+										WHERE zapato.codigoZapato = (SELECT codigoZapato FROM detallecompra WHERE
+										detallecompra.idDetalleCompra=PidDetalleCompra);
+										
+										COMMIT;
+										SELECT "SE ACTUALIZO CORRECTAMENTE" AS "AVISO";
+	ELSE 
+		SELECT "NO EXISTE CARGO" As "AVISO";
+	END IF;
+END
+	
+CALL actualizar_detalleCompra(16,4,300)
+													 
+													 
+
+DROP PROCEDURE IF EXISTS actualizar_detalleVenta;
+CREATE PROCEDURE actualizar_detalleVenta(
+								 PidDetalleVenta INT,
+								 PcantidadVenta FLOAT)
+
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+		BEGIN
+			SELECT "Operacion abortada" As "Advertencia";
+			ROLLBACK;
+		END;
+SET AUTOCOMMIT = 0;
+
+	IF EXISTS (SELECT idDetalleVenta FROM detalleventa WHERE detalleventa.idDetalleVenta=PidDetalleVenta LIMIT 1) THEN
+	
+	UPDATE detalleventa SET detalleventa.cantidadVenta = PcantidadVenta
+													 WHERE detalleventa.idDetalleVenta
+													 =PidDetalleVenta;
+													 
+	UPDATE venta SET venta.totalVenta = (SELECT cantidadVenta FROM detalleventa WHERE
+										detalleventa.idDetalleVenta=PidDetalleVenta) *
+										(SELECT precioVendido FROM detalleventa WHERE
+										detalleventa.idDetalleVenta=PidDetalleVenta)
+										WHERE venta.folioVenta=
+										(SELECT folioVenta FROM detalleventa WHERE
+										detalleventa.idDetalleVenta=PidDetalleVenta);
+										
+	UPDATE zapato SET zapato.existencia = zapato.existencia - (SELECT cantidadVenta FROM detalleventa WHERE
+										detalleventa.idDetalleVenta=PidDetalleVenta)
+										WHERE zapato.codigoZapato = (SELECT codigoZapato FROM detalleventa WHERE
+										detalleventa.idDetalleVenta=PidDetalleVenta);
+										
+										COMMIT;
+										SELECT "SE ACTUALIZO CORRECTAMENTE" AS "AVISO";
+	ELSE 
+		SELECT "NO EXISTE CARGO" As "AVISO";
+	END IF;
+END
+	
+CALL actualizar_detalleVenta(3,2)									

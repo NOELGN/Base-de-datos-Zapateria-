@@ -1,0 +1,5 @@
+cliente
+vendedor
+comprador
+administador
+superDios

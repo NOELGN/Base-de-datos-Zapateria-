@@ -1,0 +1,35 @@
+DROP PROCEDURE IF EXISTS eliminar_detalleVenta;
+CREATE PROCEDURE eliminar_detalleVenta(
+								 PidDetalleVenta INT)
+								 
+BEGIN 
+	DECLARE EXIT HANDLER FOR SQLEXCEPTION
+		BEGIN
+			SELECT "Operacion abortada" As "Advertencia";
+			ROLLBACK;
+		END;
+SET AUTOCOMMIT = 0;
+
+	IF EXISTS (SELECT idDetalleVenta FROM detalleventa WHERE detalleventa.
+	idDetalleVenta=PidDetalleVenta LIMIT 1) THEN
+		
+		UPDATE venta SET venta.totalVenta = 0
+		WHERE venta.folioVenta=(SELECT folioVenta
+		FROM detalleventa WHERE detalleventa.idDetalleVenta = PidDetalleVenta);
+		
+		UPDATE zapato SET zapato.existencia = zapato.existencia + (SELECT detalleventa.cantidadVenta FROM
+		detalleventa WHERE detalleventa.idDetalleventa = PidDetalleVenta)
+										WHERE zapato.codigoZapato = (SELECT codigoZapato FROM detalleventa WHERE
+										detalleventa.idDetalleVenta=PidDetalleVenta);
+										
+		DELETE FROM detalleventa WHERE idDetalleVenta = PidDetalleVenta;								
+		
+	
+		COMMIT;
+		SELECT "SE ELIMINO CORRECTAMENTE" AS "AVISO";
+	ELSE 
+		SELECT "NO EXISTE Venta" As "AVISO";
+	END IF;
+END
+
+CALL eliminar_detalleVenta(6)
